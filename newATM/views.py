@@ -1,9 +1,9 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.generic import ListView
 from django.views.generic import View
 from django.core import serializers
 from .ml import predict_model
+from .data_processing import get_info
 
 from .services import get_atms
 from .models import Atm
@@ -24,17 +24,27 @@ def tool(request):
 
 
 class FeedAjax(View):
+
     def get(self, request):
-        key = 'AIzaSyA6OIckVeIG_7_3DNy1m_tqKqYtzijTws0'
-        text = request.GET.get('utility_input')
-        print(text)
+        key = self.key
+        unique_cities = Atm.objects.order_by().values('settlement').distinct()
+        result = None
         if request.is_ajax():
-            coordinates = text.split(',')
-            print(coordinates)
-            result = predict_model.run_prediction(coordinates[0], coordinates[1], key)
-            print(result)
-            return JsonResponse({'result': result}, status=200)
-        return render(request, 'feed/feed.html', {'title': 'Советник', 'route': 'feed'})
+            text = request.GET.get('utility_input')
+            selected = request.GET.get('city')
+            if text is not None:
+                coordinates = text.split(',')
+                print(coordinates)
+                result = predict_model.run_prediction(coordinates[0], coordinates[1], key)
+                print(result)
+            if selected is not None:
+                requested_cities = Atm.objects.filter(settlement=selected)
+                print(get_info(requested_cities, key))
+
+            return JsonResponse({'result': result, 'selected': selected}, status=200)
+        return render(request, 'feed/feed.html', {'unique_cities': unique_cities, 'title': 'Советник', 'route': 'feed'})
+
+
 
 
 class AjaxDashboard(View):

@@ -7,8 +7,23 @@ $(document).ready(function(){
                 utility_input: $(".form-utility").val()
             },
             success: function (response) {
+                console.log(response.result)
                 $(".card-text").first().replaceWith("<p class='card-text'>  Прогнозируемая привлекательность " +
                     '<b>' + response.result + "</b></p>")
+            }
+        });
+    });
+
+    $('select').on('change', function () {
+        let a = this.value
+        $.ajax({
+            url: '',
+            type: 'get',
+            data: {
+                city: a
+            },
+            success: function (response) {
+                console.log('Hello!')
             }
         });
     });

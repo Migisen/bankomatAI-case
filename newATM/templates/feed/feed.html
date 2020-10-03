@@ -26,7 +26,7 @@
             <div class="card">
                 <div class="card-body" style="background-color: #00C0B8; color: #ffffff;">
                     <h5 class="card-title">Виджет №2</h5>
-                    <p class="card-text">Тут могла была быть важа реклама...</p>
+                    <p class="card-text">Тут могла была быть ваша реклама...</p>
                 </div>
             </div>
 
@@ -44,7 +44,12 @@
 
         <select class="browser-default custom-select select-field">
               <option selected>Выберете субъект</option>
-              <option value="1">Москва</option>
+            {% for city in unique_cities %}
+                {% if city.settlement  %}
+                    <option value="{{ city.settlement }}">{{ city.settlement }}</option>
+                {% endif %}
+            {% endfor %}
+
         </select>
     </div>
 

@@ -101,7 +101,6 @@ def run_prediction(LAT: int, LONG: int, KEY: str):
         result[colname] = [places_result]
         b = pd.concat([result, result])
         a = extract_data(a, b)
-    print(os.getcwd())
     model = load_obj('./model.pkl')
 
     predict = model.predict(a[FEATURES])[0]

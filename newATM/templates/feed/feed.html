@@ -41,7 +41,6 @@
 
      <div class="container d-flex flex-column align-items-center mt-5 text-center">
         <h1 class="mb-5">Помощь по субъектам</h1>
-
         <select class="browser-default custom-select select-field">
               <option selected>Выберете субъект</option>
             {% for city in unique_cities %}
@@ -52,6 +51,8 @@
 
         </select>
     </div>
-    <div id="map"></div>
+    <div class="map container d-flex flex-column align-items-center mt-5 text-center">
+        <img src="{% static "maps\maps.png" %}" alt="" class="map-img">
+    </div>
 {% endblock content %}
 

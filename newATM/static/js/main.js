@@ -16,6 +16,7 @@ $(document).ready(function(){
 
     $('select').on('change', function () {
         let a = this.value
+        let d = new Date()
         $.ajax({
             url: '',
             type: 'get',
@@ -23,7 +24,7 @@ $(document).ready(function(){
                 city: a
             },
             success: function (response) {
-                console.log('Hello!')
+                $('.map-img').attr("src", "/maps.png?"+d.getTime())
             }
         });
     });

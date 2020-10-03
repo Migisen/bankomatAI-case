@@ -122,3 +122,8 @@
 .select-field {
     width: 33%;
 }
+
+.map {
+    overflow: visible;
+    border-radius: 15px;
+}

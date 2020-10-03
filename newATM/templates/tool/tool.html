@@ -1,0 +1,24 @@
+{%  extends 'home/base.html'%}
+{% load static %}
+
+{% block content %}
+    <div class="d-flex flex-column align-items-center">
+        <h1 class="display-4 bank_text_color text-center">Оценка загруженности <b>в один клик.</b></h1>
+        <h4 class="lead bank_secondary_color text-center">Просто введите координаты.</h4>
+    </div>
+    <div class="content mt-6 d-flex flex-column align-items-center">
+        <form class="utility-form"  action="">
+            <div class="form-group">
+                <label for="check_utility"></label>
+                <input class="form-control form-utility" type="text" name="utility" placeholder="Оценить " id="check_utility">
+                <button type="button" class="btn btn-utility btn-primary ml-1 pl-4 pr-4"><i class="fas fa-angle-right"></i></button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="d-flex align-items-center text-center mt-6">
+    <div class="container score"></div>
+    </div>
+
+{% endblock content %}

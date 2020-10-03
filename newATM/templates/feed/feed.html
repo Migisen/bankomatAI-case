@@ -1,0 +1,52 @@
+{%  extends 'home/base.html'%}
+{% load static %}
+
+{% block content %}
+    <div class="d-flex flex-column align-items-center">
+        <h1 class="display-4 bank_text_color text-center">Советы для быстрого <b>решения задач.</b></h1>
+        <h5 class="lead bank_secondary_color text-center">Современное решение основанное на данных </h5>
+    </div>
+
+    <div class="container mt-6 text-center">
+        <h1 >Виджеты</h1>
+        <div class="card-deck mt-5" >
+            <div class="card" style="background-color: #006BF9; color: #ffffff">
+                <div class="card-body">
+                    <h5 class="card-title">Проверка адреса</h5>
+                    <p class="card-text">Оценка загруженности в один клик. Просто введите координаты</p>
+                    <div class="d-flex flex-row align-items-center justify-content-between">
+                        <input class="form-control form-utility" type="text" name="utility" placeholder="Оценить " id="check_utility">
+                        <button type="button" class="btn btn-utility btn-light ml-1 ">
+                            <i class="fas fa-angle-right send-address"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body" style="background-color: #00C0B8; color: #ffffff;">
+                    <h5 class="card-title">Виджет №2</h5>
+                    <p class="card-text">Тут могла была быть важа реклама...</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body" style="background-color: #9660D6; color: #ffffff;">
+                    <h5 class="card-title">Виджет №3</h5>
+                    <p class="card-text">Скоро будут полезные функции...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="container d-flex flex-column align-items-center mt-5 text-center">
+        <h1 class="mb-5">Помощь по субъектам</h1>
+
+        <select class="browser-default custom-select select-field">
+              <option selected>Выберете субъект</option>
+              <option value="1">Москва</option>
+        </select>
+    </div>
+
+{% endblock content %}
+

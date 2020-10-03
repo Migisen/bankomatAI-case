@@ -1,0 +1,53 @@
+{%  extends 'home/base.html'%}
+{% load static %}
+
+{% block content %}
+    <div class="d-flex flex-column align-items-center">
+        <h1 class="display-4 bank_text_color text-center">Все данные в <b>одном месте.</b></h1>
+        <h5 class="lead bank_secondary_color text-center">Актуальная информация о уже введёных в работу банкоматах</h5>
+    </div>
+    <div class="d-flex flex-row justify-content-center mt-6">
+        <div class="map-container text-center">
+            <div class="map-header">
+                <div class="title"></div>
+                <div class="id"></div>
+            </div>
+            <div class="map-body">
+
+            </div>
+        </div>
+
+
+        <div class="atm-list-container">
+            <div class="atm-list mb-2 ml-2 mr-2">
+                <div class="list-group overflow-auto">
+
+                    {% for atm in working_atms %}
+                        <a href="#" class="atm-list-button list-group-item list-group-item-action flex-column
+                        align-items-start">
+                            <div class="d-flex justify-content-between">
+                                    <h6 class="mb-1 mr-1 w-75 overflow-hidden">{{ atm.location }}</h6>
+                                <small class="text-muted atm-id">{{ atm.id }}</small>
+                            </div>
+                            <small>{{ atm.region }} {{ atm.region_type }}, {{ atm.settlement }}</small>
+                        </a>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div class="atm-search">
+                <div class="input-group md-form form-sm form-2 pl-0">
+                      <input class="form-control utility-button my-0 py-1" type="text" placeholder="Поиск" aria-label="Search">
+                      <div class="input-group-append">
+                        <span class="input-group-text lighten-3" id="basic-text1">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                        </span>
+                      </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock content %}

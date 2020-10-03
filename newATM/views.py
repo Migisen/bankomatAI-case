@@ -2,8 +2,10 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import View
 from django.core import serializers
-from .ml import predict_model
+
 from .data_processing import get_info
+from .ml import predict_model
+#from .data_processing import get_info
 
 from .services import get_atms
 from .models import Atm
@@ -24,7 +26,7 @@ def tool(request):
 
 
 class FeedAjax(View):
-
+    key = 'AIzaSyA6OIckVeIG_7_3DNy1m_tqKqYtzijTws0'
     def get(self, request):
         key = self.key
         unique_cities = Atm.objects.order_by().values('settlement').distinct()
@@ -35,8 +37,9 @@ class FeedAjax(View):
             if text is not None:
                 coordinates = text.split(',')
                 print(coordinates)
-                result = predict_model.run_prediction(coordinates[0], coordinates[1], key)
+                result = predict_model.run_prediction(float(coordinates[0]), float(coordinates[1])).predict[0]
                 print(result)
+                result = round(result, 1)
             if selected is not None:
                 requested_cities = Atm.objects.filter(settlement=selected)
                 print(get_info(requested_cities, key))

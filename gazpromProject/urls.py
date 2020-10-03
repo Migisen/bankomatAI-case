@@ -16,13 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from newATM import views
-from newATM.views import AjaxDashboard
-from newATM.views import FeedAjax
+from newATM.views import AjaxDashboard, FeedAjax
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='atm-home'),
     path('about/', views.about, name='atm-about'),
     path('dashboard/', AjaxDashboard.as_view(), name='atm-dashboard'),
-    path('feed/',FeedAjax.as_view(), name='atm-feed')
+    path('feed/', FeedAjax.as_view(), name='atm-feed'),
 ]

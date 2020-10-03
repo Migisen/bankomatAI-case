@@ -1,23 +1,31 @@
+import os
+
+import herepy
 import pandas as pd
 import googlemaps
 from matplotlib import pyplot as plt
+import requests
 from .models import Atm
 
 
 def get_info(model_list: list, key: str):
     df = pd.DataFrame(model_list.values())
-    places = ['atm']
-    df.plot(kind="scatter", x="longitude", y="latitude", alpha=0.4)
-    plt.show()
+    coordinates = [(long, lat) for long, lat in zip(df.longitude, df.latitude)]
+    get_image(coordinates)
 
 
-def request_google(longitude: float, latitude: float, places: list, key: str):
-    gmaps = googlemaps.Client(key=key)
-    result = {}
-    for place in places:
-        places_result = gmaps.places_nearby(location=f'{latitude}, {longitude}', radius=1000, type=places)
-        if places_result['status'] == 'ZERO_RESULT':
-            result[place] = None
-        else:
-            result[place] = places_result['results']
-    return result
+def get_image(coordinates) -> None:
+    api_key = 'Z1KAtxmnqH87jAHTrHtJzh3W6v_v7Oij6ns2tw_qejQ'
+    url = 'https://image.maps.ls.hereapi.com/mia/1.6/stat'
+    s = requests.Session()
+    request_params = {
+        'apiKey': api_key
+    }
+    for n, coordinate_pair in enumerate(coordinates):
+        request_params[f'o{n}'] = str(coordinate_pair) + ';10'
+    response = s.get(url, params=request_params)
+
+    with open('C:\\Users\\Migisen\\PycharmProjects\\gazpromProject\\newATM\\static\\maps\\maps.png', 'wb') as f:
+        f.write(response.content)
+
+

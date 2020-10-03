@@ -1,0 +1,470 @@
+Metadata-Version: 2.1
+Name: herepy
+Version: 3.0.2
+Summary: A library that provides a Python interface to the HERE APIs
+Home-page: https://github.com/abdullahselek/HerePy
+Author: Abdullah Selek
+Author-email: abdullahselek@gmail.com
+Maintainer: Abdullah Selek
+Maintainer-email: abdullahselek@gmail.com
+License: MIT License
+Download-URL: https://pypi.org/pypi/herepy
+Keywords: here api
+Platform: Any
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.5
+Description-Content-Type: text/x-rst
+Requires-Dist: requests (==2.24.0)
+
+HerePy
+======
+
+.. image:: https://github.com/abdullahselek/HerePy/workflows/HerePy%20CI/badge.svg
+    :target: https://github.com/abdullahselek/HerePy/actions
+
+.. image:: https://img.shields.io/pypi/v/herepy.svg
+    :target: https://pypi.python.org/pypi/herepy/
+
+.. image:: https://img.shields.io/pypi/pyversions/herepy.svg
+    :target: https://pypi.org/project/herepy
+
+.. image:: https://codecov.io/gh/abdullahselek/HerePy/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/abdullahselek/HerePy
+
+.. image:: https://requires.io/github/abdullahselek/HerePy/requirements.svg?branch=master
+    :target: https://requires.io/github/abdullahselek/HerePy/requirements/?branch=master
+
++-------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+|                                Linux                                    |                                       Windows                                    |
++=========================================================================+==================================================================================+
+| .. image:: https://travis-ci.org/abdullahselek/HerePy.svg?branch=master | .. image:: https://ci.appveyor.com/api/projects/status/wlxrx5h8e8xyhvq2?svg=true |
+|    :target: https://travis-ci.org/abdullahselek/HerePy                  |    :target: https://ci.appveyor.com/project/abdullahselek/herepy                 |
++-------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+
+Introduction
+============
+
+This library provides a pure Python interface for the `HERE API <https://developer.here.com/>`_. It works with Python versions 3.x.
+
+`HERE <https://www.here.com/>`_ provides location based services. HERE exposes a `rest APIs <https://developer.here.com/documentation>`_ and this library is intended to make it even easier for Python programmers to use.
+
+Installing
+==========
+
+You can install herepy using::
+
+    $ pip install herepy
+
+Getting the code
+================
+
+The code is hosted at https://github.com/abdullahselek/HerePy
+
+Check out the latest development version anonymously with::
+
+    $ git clone git://github.com/abdullahselek/HerePy.git
+    $ cd HerePy
+
+To install dependencies, run either::
+
+    $ pip install -Ur requirements.testing.txt
+    $ pip install -Ur requirements.txt
+
+To install the minimal dependencies for production use (i.e., what is installed
+with ``pip install herepy``) run::
+
+    $ pip install -Ur requirements.txt
+
+Running Tests
+=============
+
+The test suite can be run against a single Python version which requires ``pip install pytest`` and optionally ``pip install pytest-cov`` (these are included if you have installed dependencies from ``requirements.testing.txt``)
+
+To run the unit tests with a single Python version::
+
+    $ py.test -v
+
+to also run code coverage::
+
+    $ py.test --cov=herepy
+
+To run the unit tests against a set of Python versions::
+
+    $ tox
+
+Models
+------
+
+The library utilizes models to represent various data structures returned by HERE::
+
+    * herepy.GeocoderResponse
+    * herepy.GeocoderReverseResponse
+    * herepy.RoutingResponse
+    * herepy.GeocoderAutoCompleteResponse
+    * herepy.PlacesResponse
+    * herepy.PublicTransitResponse
+    * herepy.RmeResponse
+    * herepy.EVChargingStationsResponse
+    * herepy.WaypointSequenceResponse
+
+GeocoderApi
+-----------
+
+Is the wrapper for HERE Geocoder API, to use this wrapper and all other wrappers you need an API key which you
+can get from `HERE Developer Portal <https://developer.here.com/>`_.
+
+Initiation of GeocoderApi
+
+.. code:: python
+
+    import herepy
+
+    geocoderApi = herepy.GeocoderApi('api_key')
+
+Geocoding given search text
+
+.. code:: python
+
+    response = geocoderApi.free_form('200 S Mathilda Sunnyvale CA')
+
+Geocoding given search text with in given boundingbox
+
+.. code:: python
+
+    response = geocoderApi.address_with_boundingbox('200 S Mathilda Sunnyvale CA',
+                                                    [42.3952,-71.1056],
+                                                    [42.3312,-71.0228])
+
+Geocoding with given address details
+
+.. code:: python
+
+    response = geocoderApi.address_with_details(34, 'Barbaros', 'Istanbul', 'Turkey')
+
+Geocoding with given street and city
+
+.. code:: python
+
+    response = geocoderApi.street_intersection('Barbaros', 'Istanbul')
+
+GeocoderReverseApi
+------------------
+
+Is the wrapper for HERE Geocoder Reverse API, to use this wrapper and all other wrappers you need an API key
+which you can get from `HERE Developer Portal <https://developer.here.com/>`_.
+
+Initiation of GeocoderReverseApi
+
+.. code:: python
+
+    import herepy
+
+    geocoderReverseApi = herepy.GeocoderReverseApi('api_key')
+
+
+Retrieving address of a given point
+
+.. code:: python
+
+    response = geocoderReverseApi.retrieve_addresses([42.3952, -71.1056])
+
+RoutingApi
+----------
+
+Initiation of RoutingApi
+
+.. code:: python
+
+    import herepy
+
+    routingApi = herepy.RoutingApi('api_key')
+
+Calculate route for car
+
+.. code:: python
+
+    response = routingApi.car_route([11.0, 12.0],
+                                    [22.0, 23.0],
+                                    [herepy.RouteMode.car, herepy.RouteMode.fastest])
+
+Calculate route for pedestrians
+
+.. code:: python
+
+    response = routingApi.pedastrian_route([11.0, 12.0],
+                                           [22.0, 23.0],
+                                           [herepy.RouteMode.pedestrian, herepy.RouteMode.fastest])
+
+Calculate route between three points
+
+.. code:: python
+
+    response = routingApi.intermediate_route([11.0, 12.0],
+                                             [15.0, 16.0],
+                                             [22.0, 23.0],
+                                             [herepy.RouteMode.car, herepy.RouteMode.fastest])
+
+Route for public transport
+
+.. code:: python
+
+    response = routingApi.public_transport([11.0, 12.0],
+                                           [15.0, 16.0],
+                                           True,
+                                           [herepy.RouteMode.publicTransport, herepy.RouteMode.fastest])
+
+Calculates the fastest car route between two location
+
+.. code:: python
+
+    response = routingApi.location_near_motorway([11.0, 12.0],
+                                                 [22.0, 23.0],
+                                                 [herepy.RouteMode.car, herepy.RouteMode.fastest])
+
+Calculates the fastest truck route between two location
+
+.. code:: python
+
+    response = routingApi.truck_route([11.0, 12.0],
+                                      [22.0, 23.0],
+                                      [herepy.RouteMode.truck, herepy.RouteMode.fastest])
+
+Calculate an MxN cost matrix for M start points and N destinations
+
+.. code:: python
+
+    response = routingApi.matrix(
+        start_waypoints=[[11.0, 12.0], [13.0, 14.0]],
+        destination_waypoints=[[21.0, 22.0], [23.0, 24.0]],
+        departure='2013-07-04T17:00:00+02',
+        modes=[herepy.RouteMode.fastest, herepy.RouteMode.car])
+
+Calculate route providing names instead of coordinates
+
+.. code:: python
+
+    response = routingApi.car_route([11.0, 12.0],
+                                    '200 S Mathilda Sunnyvale CA',
+                                    [herepy.RouteMode.car, herepy.RouteMode.fastest])
+
+
+GeocoderAutoCompleteApi
+-----------------------
+
+Initiation of GeocoderAutoCompleteApi
+
+.. code:: python
+
+    import herepy
+
+    geocoderAutoCompleteApi = herepy.GeocoderAutoCompleteApi('api_key')
+
+Request a list of suggested addresses found within a specified area
+
+.. code:: python
+
+    response = geocoderAutoCompleteApi.address_suggestion('High', [51.5035,-0.1616], 100)
+
+Request a list of suggested addresses within a single country
+
+.. code:: python
+
+    response = geocoderAutoCompleteApi.limit_results_byaddress('Nis', 'USA')
+
+
+PlacesApi
+---------
+
+Initiation of PlacesApi
+
+.. code:: python
+
+    import herepy
+
+    placesApi = herepy.PlacesApi('api_key')
+
+Request a list of nearby places based on a query string
+
+.. code:: python
+
+    response = placesApi.onebox_search([37.7905, -122.4107], 'restaurant')
+
+Search list of places with a query and country parameter
+
+.. code:: python
+
+    response = placesApi.search_in_country([37.7905, -122.4107], 'cafe', 'USA')
+
+Search places with in a given coordinates, radius and query
+
+.. code:: python
+
+    response = placesApi.places_in_circle([37.7905, -122.4107], 1000, 'cafe')
+
+PublicTransitApi
+----------------
+
+Initiation of PublicTransitApi
+
+.. code:: python
+
+    import herepy
+
+    publicTransitApi = herepy.PublicTransitApi('api_key')
+
+RmeApi
+------
+
+Initiation of RmeApi
+
+.. code:: python
+
+    import herepy
+
+    rmeApi = herepy.RmeApi('api_key')
+
+Get information about points of a gpx file
+
+.. code:: python
+
+    with open('my-gpx.file') as gpx_file:
+        content = gpx_file.read()
+        response = rmeApi.match_route(content, ['ROAD_GEOM_FCn(*)'])
+
+EVChargingStationsApi
+---------------------
+
+Initiation of EVChargingStationsApi
+
+.. code:: python
+
+    import herepy
+
+    ev_charging_api = herepy.EVChargingStationsApi(app_id='app_id', app_code='app_code')
+
+Makes a search request for charging stations within a circular area
+
+.. code:: python
+
+    response = ev_charging_api.get_stations_circular_search(latitude=52.516667,
+                                                            longitude=13.383333,
+                                                            radius=5000,
+                                                            connectortypes=[EVStationConnectorTypes.small_paddle_inductive,
+                                                        EVStationConnectorTypes.large_paddle_inductive])
+
+Makes a search request for charging stations with in given bounding box
+
+.. code:: python
+
+    response = ev_charging_api.get_stations_bounding_box(top_left=[52.8, 11.37309],
+                                                         bottom_right=[52.31, 13.2],
+                                                         connectortypes=[EVStationConnectorTypes.small_paddle_inductive,
+                                                        EVStationConnectorTypes.large_paddle_inductive])
+
+Makes a search request for charging stations with in given corridor
+
+.. code:: python
+
+    response = ev_charging_api.get_stations_corridor(points=[52.51666, 13.38333, 52.13333, 11.61666, 53.56527, 10.00138],
+                                                     connectortypes=[EVStationConnectorTypes.small_paddle_inductive,
+                                                    EVStationConnectorTypes.large_paddle_inductive])
+
+Retrieves the full/updated information about a single charging station only
+
+.. code:: python
+
+    response = ev_charging_api.get_station_details(station_id='276u33db-b2c840878cfc409fa5a0aef858419037')
+
+FleetTelematicsApi
+------------------
+
+Initiation of FleetTelematicsApi
+
+.. code:: python
+
+    import herepy
+
+    fleetTelematicsApi = herepy.FleetTelematicsApi(api_key='api_key')
+
+Finds time-optimized waypoint sequence route
+
+.. code:: python
+
+    start = str.format('{0};{1},{2}', 'WiesbadenCentralStation', 50.0715, 8.2434)
+    intermediate_destinations = [str.format('{0};{1},{2}', 'FranfurtCentralStation', 50.1073, 8.6647),
+        str.format('{0};{1},{2}', 'DarmstadtCentralStation', 49.8728, 8.6326),
+        str.format('{0};{1},{2}', 'FrankfurtAirport', 50.0505, 8.5698)]
+    end = str.format('{0};{1},{2}', 'MainzCentralStation', 50.0021, 8.259)
+    modes = [herepy.RouteMode.fastest, herepy.RouteMode.car, herepy.RouteMode.traffic_enabled]
+    response = fleetTelematicsApi.find_sequence(start=start,
+            departure='2020-08-02T09:30:00%2b01:00',
+            intermediate_destinations=intermediate_destinations,
+            end=end,
+            modes=modes)
+
+To find cheaper route by picking up some additional goods along the route
+
+.. code:: python
+
+    modes = [herepy.RouteMode.fastest, herepy.RouteMode.car, herepy.RouteMode.traffic_enabled]
+    start = str.format('{0},{1};{2}:{3},value:{4}', 50.115620,
+                8.631210, herepy.MultiplePickupOfferType.pickup.__str__(),
+                'GRAPEFRUITS', 1000)
+    departure = '2020-08-14T07:30:00+02:00'
+    capacity = 10000
+    vehicle_cost = 0.29
+    driver_cost = 20
+    max_detour = 60
+    rest_times = 'disabled'
+    intermediate_destinations = [str.format('{0},{1};{2}:{3},value:{4}', 50.118578,
+                8.636551, herepy.MultiplePickupOfferType.drop.__str__(),
+                'APPLES', 30),
+            str.format('{0},{1};{2}:{3}', 50.122540, 8.631070,
+                herepy.MultiplePickupOfferType.pickup.__str__(), 'BANANAS')]
+    end = str.format('{1},{2}', 'MainzCentralStation', 50.132540, 8.649280)
+    response = fleetTelematicsApi.find_pickups(modes=modes,
+            start=start,
+            departure=departure,
+            capacity=capacity,
+            vehicle_cost=vehicle_cost,
+            driver_cost=driver_cost,
+            max_detour=max_detour,
+            rest_times=rest_times,
+            intermediate_destinations=intermediate_destinations,
+            end=end)
+
+License
+-------
+
+MIT License
+
+Copyright (c) 2017 Abdullah Selek
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+

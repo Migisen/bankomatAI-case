@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'newATM.apps.NewatmConfig'
+    'newATM.apps.NewatmConfig',
+    'maps.apps.MapsConfig'
 ]
 
 MIDDLEWARE = [

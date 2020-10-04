@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $(".btn").click(function () {
+    $(".btn-single").click(function () {
         $.ajax({
             url: '',
             type: 'get',
@@ -14,6 +14,19 @@ $(document).ready(function(){
         });
     });
 
+    $(".btn-multi").click(function (){
+        $.ajax({
+        url: '',
+        type: 'get',
+        data: {
+            utility_multi_input: $(".form-utility-multi").val()
+        },
+            success: function (response){
+                $('.map-pred-img').attr("src", "/static/maps/mappred.png?random"+new Date().getTime());
+            }
+    });
+    });
+
     $('select').on('change', function () {
         let a = this.value
         let d = new Date()
@@ -24,7 +37,7 @@ $(document).ready(function(){
                 city: a
             },
             success: function (response) {
-                $('.map-img').attr("src", "/maps.png?"+d.getTime())
+                $('.map-img').attr("src", "/static/maps/maps.png?random"+new Date().getTime())
             }
         });
     });
@@ -37,11 +50,12 @@ $(document).ready(function(){
                 atm_id: $(this).find(".atm-id").text()
             },
             success: function (response) {
-                $(".map-container").append("<h1>"  + "</h1>")
+                $(".img-dashboard").attr("src", "/static/maps/atm_map.png?random"+new Date().getTime())
             }
         });
-        $(".atm-list-button").removeClass("active")
+        $(".atm-list-button").removeClass("active");
         $(this).toggleClass("active");
-        $(this).find("small").removeClass("text-muted")
+        $(this).find("small").removeClass("text-muted");
     });
 });
+

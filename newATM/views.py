@@ -3,9 +3,9 @@ from django.shortcuts import render
 from django.views.generic import View
 from django.core import serializers
 
-from .data_processing import get_info
+from .data_processing import get_info, get_multiple_info
 from .ml import predict_model
-#from .data_processing import get_info
+# from .data_processing import get_info, get_multiple_info
 
 from .services import get_atms
 from .models import Atm
@@ -27,13 +27,18 @@ def tool(request):
 
 class FeedAjax(View):
     key = 'AIzaSyA6OIckVeIG_7_3DNy1m_tqKqYtzijTws0'
+
     def get(self, request):
         key = self.key
         unique_cities = Atm.objects.order_by().values('settlement').distinct()
         result = None
         if request.is_ajax():
             text = request.GET.get('utility_input')
+            multi_text = request.GET.get('utility_multi_input')
             selected = request.GET.get('city')
+            atm_id = request.GET.get('atm_id')
+            print(atm_id)
+            multi_result = None
             if text is not None:
                 coordinates = text.split(',')
                 print(coordinates)
@@ -42,12 +47,13 @@ class FeedAjax(View):
                 result = round(result, 1)
             if selected is not None:
                 requested_cities = Atm.objects.filter(settlement=selected)
-                print(get_info(requested_cities, key))
-
+                print(get_info(requested_cities))
+            if multi_text is not None:
+                coordinates = multi_text.split(',')
+                multi_result = predict_model.run_prediction(float(coordinates[0]), float(coordinates[1]))
+                print(get_multiple_info(multi_result))
             return JsonResponse({'result': result, 'selected': selected}, status=200)
         return render(request, 'feed/feed.html', {'unique_cities': unique_cities, 'title': 'Советник', 'route': 'feed'})
-
-
 
 
 class AjaxDashboard(View):
@@ -56,7 +62,11 @@ class AjaxDashboard(View):
         atms = Atm.objects.all()
         if request.is_ajax():
             atm = serializers.serialize("json", Atm.objects.filter(id=atm_id))
+            if atm_id is not None:
+                atm_obj = Atm.objects.filter(id=atm_id)
+                print(get_info(atm_obj, 'atm_map.png'))
             return JsonResponse({'atm': atm}, status=200)
+
 
         return render(request, 'dashboard/dashboard.html',
                       {'working_atms': atms, 'title': 'Дашборд', 'route': 'dashboard'})

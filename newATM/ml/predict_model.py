@@ -11,10 +11,10 @@ def load_obj(name):
 
 
 def generate_near_points(lat, long):
-    num_points = np.random.randint(15) + 1
+    num_points = np.random.randint(5) + 1
     df = pd.DataFrame()
-    df['lat'] = np.zeros(num_points) + np.random.uniform(low=0.0, high=.0002, size=num_points ) + lat
-    df['long'] = np.zeros(num_points) + np.random.uniform(low=0.0, high=.0002, size=num_points) + long
+    df['lat'] = np.zeros(num_points) + np.random.uniform(low=0.001, high=.01, size=num_points ) + lat
+    df['long'] = np.zeros(num_points) + np.random.uniform(low=0.001, high=.015, size=num_points) + long
     features, _ = make_regression(n_samples=num_points, n_features=17, random_state=42)
     return df.join(pd.DataFrame(features))
 

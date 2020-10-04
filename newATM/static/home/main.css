@@ -125,5 +125,26 @@
 
 .map {
     overflow: visible;
+
+}
+
+.map-img{
+    overflow: hidden;
     border-radius: 15px;
+    border: 1px solid #0057B6;
+}
+
+.map-pred-img{
+    overflow: hidden;
+    border-radius: 15px;
+    border: 1px solid #0057B6;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.map-container{
+    width: 80%;
+    border-radius: 15px;
+    border: 1px solid #0057B6;
 }

@@ -16,7 +16,7 @@
                     <p class="card-text">Оценка загруженности в один клик. Просто введите координаты</p>
                     <div class="d-flex flex-row align-items-center justify-content-between">
                         <input class="form-control form-utility" type="text" name="utility" placeholder="Оценить " id="check_utility">
-                        <button type="button" class="btn btn-utility btn-light ml-1 ">
+                        <button type="button" class="btn btn-utility btn-light btn-single ml-1 ">
                             <i class="fas fa-angle-right send-address"></i>
                         </button>
                     </div>
@@ -53,6 +53,19 @@
     </div>
     <div class="map container d-flex flex-column align-items-center mt-5 text-center">
         <img src="{% static "maps\maps.png" %}" alt="" class="map-img">
+    </div>
+    <div class="container d-flex flex-column align-items-center mt-5 text-center">
+    <h2>Показать лучшие места для размещения в радиусе</h2>
+        <h5 class="lead">Просто введите желаемый адрес</h5>
+    <div class="d-flex w-25 mt-5 flex-row align-items-center justify-content-between">
+                        <input class="form-control form-utility-multi" type="text" name="utility" placeholder="Оценить " id="check_utility">
+                        <button type="button" class=" btn btn-utility btn-light btn-multi ml-1 ">
+                            <i class="fas fa-angle-right send-address"></i>
+                        </button>
+                    </div>
+    </div>
+    <div class="map mb-5 container d-flex flex-column align-items-center mt-5 text-center">
+        <img src="{% static "maps\mappred.png" %}" alt="" class="map-pred-img">
     </div>
 {% endblock content %}
 
